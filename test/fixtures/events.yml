@@ -1,0 +1,57 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  email: MyString
+  name: MyString
+  phone_number: MyString
+  department: MyString
+  payment_method: MyString
+  eas_account: 
+  event_type: MyString
+  event_name: MyString
+  reservation_number: 
+  event_date: 2017-05-04
+  start_time: 2017-05-04 17:14:19
+  end_time: 2017-05-04 17:14:19
+  multi_day: false
+  location_id: 1
+  wireless_handheld: 1
+  wireless_lav: 1
+  wired_handheld: 1
+  table_stands: 1
+  floor_stands: 1
+  web_conferencing: false
+  press_feed: false
+  third_party: false
+  third_party_name: MyString
+  additional_laptops: false
+  additional_laptops_count: 1
+  comments: MyString
+
+two:
+  email: MyString
+  name: MyString
+  phone_number: MyString
+  department: MyString
+  payment_method: MyString
+  eas_account: 
+  event_type: MyString
+  event_name: MyString
+  reservation_number: 
+  event_date: 2017-05-04
+  start_time: 2017-05-04 17:14:19
+  end_time: 2017-05-04 17:14:19
+  multi_day: false
+  location_id: 1
+  wireless_handheld: 1
+  wireless_lav: 1
+  wired_handheld: 1
+  table_stands: 1
+  floor_stands: 1
+  web_conferencing: false
+  press_feed: false
+  third_party: false
+  third_party_name: MyString
+  additional_laptops: false
+  additional_laptops_count: 1
+  comments: MyString

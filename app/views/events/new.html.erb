@@ -1,0 +1,185 @@
+
+<script>
+	function ShowNextStep(old_id, new_id){
+		document.getElementById(old_id).style.display = 'none';
+		document.getElementById(new_id).style.display = 'block';
+	}
+</script>
+<div class="container-fluid">
+<h4>Tech Request Form</h4>
+<small>
+<%= form_for(@event, :remote => true, html: {class: 'form'}) do |f| %>
+	<div id="part1">
+		<%= f.label :name %>
+		<%= f.text_field :name, class: 'form-control' %>
+		<br>
+		<%= f.label :email %>
+		<%= f.text_field :email, class: 'form-control' %>
+		<br>
+		<%= f.label :phone_number %>
+		<%= f.text_field :phone_number, class: 'form-control' %>
+		<br>
+		<%= f.label :department %>
+		<%= f.text_field :department, class: 'form-control' %>
+		<br>
+		<div id="payment">
+		<%= f.label :payment_method %>
+		<% other_choices = options_for_select([
+	    	['EAS Account', 'EAS Account'],
+	    	['Check', 'Check'],
+	    	['Student Organization (no-charge)', 'Student Organization (no-charge)']
+	  		] 
+		) %>
+		<%= f.select :payment_method, other_choices, include_blank: true, class: 'form-control' %>
+		<br>
+		</div>
+		<br>
+		<%= f.label :event_type %>
+		<% choices = options_for_select([
+	    	['Internal GW Department', 'Internal GW Department'],
+	    	['GW Student Organization', 'GW	Student Organization'],
+	    	['External Organization', 'External Organization']
+	  		] 
+		) %>
+		<%= f.select :event_type, choices, class: 'form-control' %>
+		<br>
+		<br>
+		<%= f.label :event_name %>
+		<%= f.text_field :event_name, class: 'form-control' %>
+		<br>
+		
+		<button type="button" class="btn btn-info" onclick="ShowNextStep('part1','part2')" disabled="true" id="payment_method_check">Next</button>
+		<br />
+		<br />
+	</div>
+	<div id="part2" style="DISPLAY: none;">
+		<%= f.label :reservation_number %>
+		<%= f.text_field :reservation_number, class: 'form-control' %>
+		<br>
+		<%= f.label :event_date %>
+		<%= f.date_field :event_date, class: 'form-control' %>	
+		<br>
+		<%= f.label :start_time %>
+		<%= f.time_field :start_time, class: 'form-control' %>
+		<br>
+		<%= f.label :end_time %>
+		<%= f.time_field :end_time, class: 'form-control' %>
+		<br>
+		<%= f.label :multi_day %>
+		<%= f.label :multi_day, "Yes" %>
+		<%= f.radio_button :multi_day, true %>
+		<%= f.label :multi_day, "No" %>
+		<%= f.radio_button :multi_day, false %>
+		<br>
+		<%= label_tag "room_type", "Room Type:" %>
+		<%= select_tag "room_type", options_from_collection_for_select(RoomType.all, 'id', 'name'), include_blank: true, class: 'form-control' %>
+		<br>
+		<%= f.label :location_id %>
+		<%= f.grouped_collection_select(:location_id, RoomType.all, :locations, :name, :id, :name, {include_blank: true}, class: 'form-control') %>
+		<br>
+		<button type="button" onclick="ShowNextStep('part2','part1')" class="btn btn-warning">Back</button> | 
+		<button id="room_next" type="button" onclick="ShowNextStep('part2','part3')" disabled="true" class="btn btn-info">Next</button>
+		<br>
+		<br />
+	</div>
+
+	<div id="part3" style="DISPLAY: none;">
+		<div id="room_type_info"></div>
+		<br>
+		<label for="agree_type"><b>I Understand</b>
+		<input type="checkbox" id="agree_type" ></label>
+		<br>
+		<button type="button" onclick="ShowNextStep('part3','part2')" class="btn btn-warning">Back</button> | 
+		<button id="type_next" type="button" onclick="ShowNextStep('part3','part4')" disabled="true" class="btn btn-info">Next</button>
+		<br />
+		<br />
+	</div>
+
+	<div id="part4" style="DISPLAY: none;">
+		<div id="laptops">
+			<%= f.label :additional_laptops %>
+			<%= f.check_box :additional_laptops %>
+			<br>
+		</div>
+		<div id="comments">
+			<%= f.label :comments %>
+			<%= f.text_area :comments, class: 'form-control' %>
+			<br>
+		</div>
+		<button type="button" onclick="ShowNextStep('part4','part3')" class="btn btn-warning">Back</button> | 
+		<button id="addl_next" type="button" onclick="ShowNextStep('part4','part5')" class="btn btn-info">Next</button>
+		<br />
+		<br />
+	</div>
+
+	<div id="part5" style="DISPLAY: none;">
+		<p>Please review the Estimated Summary of Charges and full Tech Request submission before clicking the 'Submit' button at the bottom.</p>
+		<h5>Summary of Charges</h5>
+		<table class="table table-bordered table-sm">
+			<thead>
+				<tr>
+					<th>Item</th>
+					<th>Value</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr id="all_in_one">
+					<td>All In One Room Cost</td>
+					<td id="all_in_one_cost"></td>
+				</tr>
+				<tr id="add_on_equipment">
+					<td>Additional Equipment</td>
+					<td id="add_on_equipment_cost"></td>
+				</tr>
+				<tr class="table-info">
+					<td><b>Total</b></td>
+					<td id="sum_total"></td>
+				</tr>
+				
+			</tbody>
+		</table>
+		<input type="hidden" value="" id="desc_storage">
+		<h5>Form Submission</h5>
+		<table class="table table-bordered table-sm">
+			<thead>
+				<tr>
+					<th>Field</th>
+					<th>Value</th>
+				</tr>
+			</thead>
+			<tbody>
+				<% Event.column_names.each do |e| %>
+					<% if e == "id" || e == "created_at" || e == "updated_at" %>
+
+					<% else %>
+						<tr id=<%= e.to_s + "_row" %>>
+							<td id=<%= e.to_s + "_attr" %>><%= e.humanize %></td>
+							<td id=<%= e.to_s + "_table" %>></td>
+						</tr>
+					<% end %>
+				<% end %>
+			</tbody>
+		</table>
+		<%= f.submit "Submit Request", class: 'btn btn-success' %>
+		<br>
+		<br>
+	</div>
+<% end %>
+<div id="success" style="display: none">
+<div class="card card-block card-success">
+<h5 class="card-title">Success!</h5>
+<p class="card-text">Thank you for submitting your request to Academic Technoligies for your event technology needs. We require at least one business day to process technology requests. You will receive an email shortly detailing your request, and Solutions Center staff will contact you with further questions or confirmation of event support.</p>
+</div>
+</div>
+<div id="failure" style="display: none">
+<div class="card card-block card-danger">
+<h5 class="card-title">Error</h5>
+<p class="card-text">There was an error processing your request. Please try again at a later time, or email Solutions Center staff directly at <a mailto="acadtech@gwu.edu">acadtech@gwu.edu</a> to request technology support for your event.</p>
+</div>
+</div>
+
+<%= javascript_tag do %>
+	window.names = <%= raw(Event.column_names) %>
+<% end %>
+</small>
+</div>
