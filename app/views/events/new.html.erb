@@ -50,6 +50,14 @@
 		
 		<button type="button" class="btn btn-info" onclick="ShowNextStep('part1','part2')" disabled="true" id="payment_method_check">Next</button>
 		<br />
+		<% if user_signed_in? %>
+			<br>
+			<% if Rails.env.development? %>
+			<a type="button" class="btn btn-warning" href=<%= events_path %>>Admin</a>
+			<% else %>
+			<a type="button" class="btn btn-warning" href="http://54.242.162.206/events">Admin</a>
+			<% end %>
+		<% end %>
 		<br />
 	</div>
 	<div id="part2" style="DISPLAY: none;">
