@@ -235,12 +235,13 @@
 </ol>
 
 <p>Prices and other applicable fees are listed on the form. Please note that we need at least 24 hours for changes made to equipment reservations.</p>
-
+<div class="tech-form">
 <% if Rails.env.development? %>
-<iframe src="http://127.0.0.1:3000" height="600" width="600"></iframe>
+<iframe src="http://127.0.0.1:3000" height="600"></iframe>
 <% else %>
-<iframe src="http://54.242.162.206/" height="600" width="600"></iframe>
+<iframe src="http://54.242.162.206/" height="600"></iframe>
 <% end %>
+</div>
 <h2>Instructional Technology Equipment Loans</h2>
 
 <p>In addition, the <a href="https://itl.gwu.edu/equipment-loans" target="_blank">Instructional Technology Lab (ITL)</a> loans equipment to GW faculty and teaching assistants in support of course-related activities on a short-term basis. Equipment available includes:</p>
