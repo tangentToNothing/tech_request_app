@@ -4,8 +4,10 @@ Rails.application.routes.draw do
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
+  get 'visitors/index', as: :home
   root 'events#new'
   get 'events/model', as: :model
+  get 'events/manage', as: :manage_event_form
   get 'locations/get_room_type_id'
   get 'locations/get_room_name'
   resources :events

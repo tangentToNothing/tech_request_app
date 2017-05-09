@@ -1,0 +1,50 @@
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-8">
+			<div class="card card-block">
+			<div class="card-title"><h3>Locations</h3></div>
+			<div class="card-body">
+				<p>Add, remove, or modify Locations capable of having Event Support.</p>
+				<table class="table table-bordered table-striped table-sm">
+					<thead>
+						<tr>
+							<th>Name</th>
+							<th>Room Type</th>
+							<th colspan="1"></th>
+						</tr>
+					</thead>
+					<tbody>
+						<%= form_for(@location) do |f| %>
+						<tr>
+							<td><%= f.text_field :name, class: 'form-control' %></td>
+							<% options = options_from_collection_for_select(RoomType.all, 'id', 'name') %>
+							<td><%= f.select :room_type_id, options, class: 'form-control' %></td>
+							<td><%= f.submit "Add New Room", class: 'btn btn-info btn-sm' %></td>
+						</tr>
+						<% end %>
+						<% @locations.each do |l| %>
+							<tr>
+								<td><%= l.name %></td>
+								<td><%= l.room_type.name %></td>
+								<td><%= link_to 'Remove Location', location_path(l), method: :delete, data: {confirm: "Are you sure you want to remove #{l.name}?"} %></td>
+							</tr>
+						<% end %>
+					</tbody>
+				</table>
+			</div>
+			</div>
+		</div>
+		<div class="col-md-4">
+			<div class="card card-block">
+			<div class="card-title"><h4>Room Types</h4></div>
+			<div class="card-body">
+				<ul class="list-group">
+					<% @room_types.each do |r| %>
+						<li class="list-group-item"><strong><%= r.name.split(": ")[1] %>: </strong><%= r.locations.count %> locations</li>
+					<% end %>
+				</ul>
+			</div>
+			</div>
+		</div>
+	</div>
+</div>

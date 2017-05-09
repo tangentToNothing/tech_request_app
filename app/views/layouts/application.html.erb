@@ -6,11 +6,11 @@
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
 </head>
-<% if !notice.blank? || !alert.blank? %>
-<p class="notice"><%= notice %></p>
-<p class="alert"><%= alert %></p>
-<% end %>
 <body data-turbolinks="false">
+<% if user_signed_in? %>
+	<%= render 'layouts/navbar' %>
+	<%= render 'layouts/messages' %>
+<% end %>
 <br>
 <%= yield %>
 

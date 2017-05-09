@@ -34,6 +34,17 @@ class EventsController < ApplicationController
 
 	end
 
+	def manage
+		if user_signed_in?
+			@locations = Location.all
+			@location = Location.new
+
+			@room_types = RoomType.all
+		else
+			root_path
+		end
+	end
+
 	private
 
 	def event_params
