@@ -2,7 +2,8 @@ class EventsController < ApplicationController
 
 	def index
 		if user_signed_in?
-			@events = Event.all
+			@unapproved_events = Event.where(approved: nil) 
+			@events = Event.where(approved: true) + Event.where(approved: false)
 		else
 			redirect_to root_path
 		end

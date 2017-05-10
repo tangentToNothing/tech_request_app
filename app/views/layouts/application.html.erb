@@ -6,13 +6,38 @@
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
 </head>
+<% if current_page?(root_path) %>
+<body data-turbolinks="false" style="background-color: #fff !important;">
+<% else %>
 <body data-turbolinks="false">
+<% end %>
 <% if user_signed_in? %>
 	<%= render 'layouts/navbar' %>
 	<%= render 'layouts/messages' %>
 <% end %>
 <br>
 <%= yield %>
+<% if current_page?(root_path) %>
 
+<% else %>
+<div class="container-fluid">
+<div class="row">
+	<div class="col-sm-10">
+
+	</div>
+	<div class="col-sm-2">
+		<div class="float-right">
+			<div class="card card-block">
+				<div class="card-body">
+					<p>Version 0.1</p>
+					<p><%= request.remote_ip %></p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>
+</div>
+<% end %>
 </body>
 </html>

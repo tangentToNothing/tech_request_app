@@ -3,6 +3,25 @@
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
 jQuery ->
+		toggle_event = (event) ->
+			pane = "#" + event + "_pane"
+			hidden = "#" + event + "_hidden"
+			open = "#" + event + "_open"
+			if $(hidden).is(':visible')
+				$(open).fadeIn("fast")
+				$(hidden).hide()
+			else
+				$(hidden).show()
+				$(open).hide()
+
+		set_event = (event) ->
+			btn = "#" + event + "_button"
+			$(btn).change ->
+				toggle_event(event)
+
+		ids = window.events
+		set_event event for event in ids
+
 		bureaus = $('#event_location_id').html()
 		$('#room_type').change ->
 			agency = $('#room_type :selected').text()
@@ -229,3 +248,4 @@ jQuery ->
 		).on "ajax:error", (e, data, status, xhr) ->
 			$('#part5').hide()
 			$('#failure').fadeIn("slow")
+

@@ -1,27 +1,69 @@
 <div class="container-fluid">
 <div class="row">
+	<div class="col-md-8">
+	<%= javascript_tag do %>
+		window.events = <%= raw(@unapproved_events.map { |e| e.id.to_s }) %>
+	<% end %>
+		<% @unapproved_events.each do |e| %>
+			<div id=<%= e.id.to_s + "_pane" %> class="card card-block">
+				<h5 class="card-title">
+					<div class="float-left">
+					<button class="btn" type="button" id=<%= e.id.to_s + "_button" %>>View</button>
+					</div>
+					&nbsp;<%= e.event_name %><small><i><%= e.email %> - <%= e.name %></i></small>
+				</h5>
+				<div id=<%= e.id.to_s + "_hidden" %>>
+
+				</div>
+				<div id=<%= e.id.to_s + "_open" %> style="DISPLAY: none;">
+					<p>Content</p>
+				</div>
+			</div>
+			<br>
+		<% end %>
+	</div>
+	<div class="col-md-4">
+		<div class="card card-block">
+		<div class="card-title"><h5>Submissions Info</h5></div>
+		<div class="card-body">
+			<ul class="list-group">
+				<li class="list-group-item"><strong>Unprocessed Events: </strong>&nbsp;<%= @unapproved_events.count %></li>
+			</ul>
+		</div>
+		</div>
+	</div>
+</div>
+<div class="row">
 	<div class="col-lg-10">
-		<div class="card card-block card-info">
-		<div class="card-title"><h3>View Submissions</h3></div>
+		<div class="card card-block">
+		<div class="card-title"><h3>View Processed Submissions</h3></div>
 		<div class="card-body">
 		<table class="table table-sm">
 			<thead>
 				<tr>
-					<% Event.column_names.each do |c| %>
-						<% if !((c == "id") || (c == "updated_at")) %>
-							<th><%= c.humanize %></th>
-						<% end %>
-					<% end %>
+					<th>Event Name</th>
+					<th>Client Name</th>
+					<th>Email</th>
+					<th>Phone</th>
+					<th>Department</th>
+					<th>Event Date</th>
+					<th>Location</th>
+					<th>Org Type</th>
+					<th colspan="1"></th>
 				</tr>
 			</thead>
 			<tbody>
 				<% @events.each do |e| %>
 					<tr>
-						<% Event.column_names.each do |c| %>
-							<% if !((c == "id") || (c == "updated_at")) %>
-								<td><%= eval "e.#{c.to_s}" %></td>
-							<% end %>
-						<% end %>	
+						<td><%= e.event_name %></td>
+						<td><%= e.name %></td>
+						<td><%= e.email %></td>
+						<td><%= e.phone_number %></td>
+						<td><%= e.department %></td>
+						<td><%= e.event_date %></td>
+						<td><%= Location.find(e.location_id).name %></td>
+						<td><%= e.event_type %></td>
+						<td><%= link_to 'View More Details', events_path(e) %></td>
 					</tr>
 				<% end %>
 			</tbody>
