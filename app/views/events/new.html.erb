@@ -150,7 +150,7 @@
 			</thead>
 			<tbody>
 				<% Event.column_names.each do |e| %>
-					<% if e == "id" || e == "created_at" || e == "updated_at" %>
+					<% if e == "id" || e == "created_at" || e == "updated_at" || e == "approved" || e == "user_id" %>
 
 					<% else %>
 						<tr id=<%= e.to_s + "_row" %>>
